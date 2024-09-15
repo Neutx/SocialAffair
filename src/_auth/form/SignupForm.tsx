@@ -2,11 +2,11 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Link } from "react-router-dom"
 
-import {  Form,  FormControl,  FormDescription,  FormField,  FormItem,  FormLabel,  FormMessage,}from "../../components/ui/form"
+import {  Form,  FormControl,  FormField,  FormItem,  FormLabel,  FormMessage,}from "../../components/ui/form"
 import { Input } from "../../components/ui/input"
 import { Button } from "../../components/ui/button"
 import { useForm } from "react-hook-form"
-import React from "react"
+import { useToast } from "@/hooks/use-toast"
 import { SignupValidation } from "../../lib/validation"
 import Loader from "../../components/shared/Loader"
 import { createUserAccount } from "@/lib/appwrite/api"
@@ -14,6 +14,8 @@ import { createUserAccount } from "@/lib/appwrite/api"
 
 
 const SingupForm = () => {
+
+  const { toast } = useToast();
   const isLoading = false;
 
 
@@ -28,12 +30,22 @@ const SingupForm = () => {
       password: "",
     },
   })
+
+  const { mutate: createUserAccount, isPending: isCreatingUser } = useCreateUserAccountMutation();
  
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
     const newUser = await createUserAccount(values);
-    console.log(newUser);
+    
+    
+    if(!newUser) {
+      return toast({
+        title: "Sign up failed, please try again."});
+    }
+
+    // const session = await signInAccount();
   }
+
   return (
     <Form {...form}>
 
