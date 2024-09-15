@@ -9,15 +9,17 @@ import { useForm } from "react-hook-form"
 import { useToast } from "@/hooks/use-toast"
 import { SignupValidation } from "../../lib/validation"
 import Loader from "../../components/shared/Loader"
-import { createUserAccount } from "@/lib/appwrite/api"
+import { useCreateUserAccount } from "@/lib/react-query/queriesAndMutation"
 
 
 
 const SingupForm = () => {
 
   const { toast } = useToast();
-  const isLoading = false;
 
+
+
+  const { mutateAsync: createUserAccount, isLoading: isCreatingUser } = useCreateUserAccount();
 
 
 // 1. Define your form.
@@ -31,7 +33,6 @@ const SingupForm = () => {
     },
   })
 
-  const { mutate: createUserAccount, isPending: isCreatingUser } = useCreateUserAccountMutation();
  
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
@@ -113,7 +114,7 @@ const SingupForm = () => {
           )}
         />
         <Button type="submit" className="shad-button_primary">
-          { isLoading ? (
+          { isCreatingUser ? (
             <div className="flex-center gap-2">
               <Loader /> Loading...
             </div>
