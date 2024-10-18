@@ -4,7 +4,7 @@ import React from 'react'
 const RootLayout = () => {
   return (
     <div>
-      <SingupForm />
+      RootLayout
     </div>
   )
 }
