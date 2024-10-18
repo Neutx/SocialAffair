@@ -11,7 +11,6 @@ import { SignupValidation } from "../../lib/validation"
 import Loader from "../../components/shared/Loader"
 import { useCreateUserAccount } from "@/lib/react-query/queriesAndMutation"
 import { useSignInAccount } from "@/lib/react-query/queriesAndMutation"
-import { signInAccount } from "@/lib/appwrite/api"
 import { useUserContext } from "@/context/AuthContext"
 
 

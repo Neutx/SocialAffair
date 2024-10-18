@@ -54,13 +54,21 @@ export async function saveUserToDB(user:{
     }
 }  
 
-export async function signInAccount(user:{email:string; password:string;}) {
+export async function signInAccount(email: string, password: string) {
     try {
-    const session = await account.createEmailPasswordSession(user.email, user.password);
-
-    return session;
+        // First, try to get the current session
+        const currentSession = await account.getSession('current');
+        
+        if (currentSession) {
+            // If a session exists, return it
+            return currentSession;
+        } else {
+            // If no session exists, create a new one
+            return await account.createSession(email, password);
+        }
     } catch (error) {
-        console.log(error);
+        console.error("Error in signInAccount:", error);
+        throw error;
     }
 }
 
