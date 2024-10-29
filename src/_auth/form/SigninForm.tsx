@@ -56,8 +56,8 @@ const SinginForm = () => {
     } catch (error) {
       if (error instanceof Error) {
         if (error.message.includes("session is active")) {
-          // User is already logged in, just navigate to home
-          navigate('/');
+          // User is already logged in, navigate to RootLayout
+          navigate('/');  // This will navigate to the root route, which is handled by RootLayout
         } else {
           toast({ title: `Error: ${error.message}` });
         }

@@ -54,23 +54,17 @@ export async function saveUserToDB(user:{
     }
 }  
 
-export async function signInAccount(email: string, password: string) {
+export async function signInAccount(user: { email: string; password: string }) {
     try {
-        // First, try to get the current session
-        const currentSession = await account.getSession('current');
-        
-        if (currentSession) {
-            // If a session exists, return it
-            return currentSession;
-        } else {
-            // If no session exists, create a new one
-            return await account.createSession(email, password);
-        }
+      
+      
+      const session = await account.createEmailPasswordSession(user.email, user.password);
+  
+      return session;
     } catch (error) {
-        console.error("Error in signInAccount:", error);
-        throw error;
+      console.log(error);
     }
-}
+  }
 
 export async function getCurrentUser() {
     try {
@@ -90,5 +84,14 @@ export async function getCurrentUser() {
     } catch (error) {
         console.log(error);
         return null;
+    }
+}
+
+export async function signOutAccount() {
+    try {
+        const session = await account.deleteSession('current');
+        return session;
+    } catch (error) {
+        console.log(error);
     }
 }
